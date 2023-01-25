@@ -1,5 +1,5 @@
 # sphinx
-A Data Driver Trading Strategy application
+A Data Driven Trading Strategy application
 
 
 ## Tables
