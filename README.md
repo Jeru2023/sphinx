@@ -1,6 +1,6 @@
 # sphinx
-Data Driver Trading Strategy
-=
+A Data Driver Trading Strategy application
+
 
 ## Tables
 ### Stock Code
