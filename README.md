@@ -1,4 +1,4 @@
-# sphinx
+# Sphinx
 A Data Driven Trading Strategy application
 
 
@@ -19,3 +19,13 @@ A Data Driven Trading Strategy application
 
 
 ### Stock Kline Daily
+| Column        | Description |
+| ------------- | ------------- |
+| code          | Stock code  |
+| date          | Trading date |
+| open          | Open price |
+| high          | Highest price |
+| low           | Lowest price |
+| close         | Close price |
+| volume         | Trading volume |
+| amount         | Trading amount |
