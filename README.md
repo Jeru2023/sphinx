@@ -33,14 +33,18 @@ exit_rule_dict = {'exit_window_len':-60}
 ### 行业验证
 指定一个申万一级行业的名字, 获取全部日线数据, 按照设定规则过滤, 计算收益率
 
+```python
 #Usage 2: 行业分析 - 计算整个行业的策略平均收益率
 industry = '银行'
 stock_list_df = mydb.query_stock_kline_by_industry(industry)
 
 total_profit_ratio, total_size = se.evaluate_industry_profit(stock_list_df, entry_rule_dict, exit_rule_dict)
 print('profit ratio mean', float(total_profit_ratio/total_size))
+```
 
 ### 个股验证
+
+```python
 #兴业银行
 code = 'sh.601166'
 stock_df = mydb.query_stock_kline_by_code(code)
@@ -53,6 +57,7 @@ print('总共找到匹配次数: {}\n'.format(size))
 print('整体收益率:  {}\n'.format(total_profit/size))
 # 打印策略模型匹配到的日期
 print('所有匹配日期: ', se.get_capture_record_date(row_list))
+```
 
 ## Tables
 ### Stock Code
