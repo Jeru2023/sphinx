@@ -1,3 +1,6 @@
+import rule_model as rm
+import math
+
 # 捕获单只股票满足策略模型的记录
 def get_capture_record(stock_df, entry_rule_dict, exit_rule_dict):
     volume_mean_window_len = rm.entry_rule_dict.get('volume_mean_window_len')
