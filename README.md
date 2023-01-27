@@ -18,12 +18,15 @@ strategy_replay.py - this is your only concern, make finetune here to find the b
 ## Strategy Validation
 只需要用到strategy_replay.py一个文件即可, 首先设定策略参数，不同行业/个股的主要差异是经营指标，比如银行看PB, 医药看PE
 ### 策略参数
+
+```python
 #对比过去15日成交量均值判断是否放量1.5倍, 当日成交金额大于300万, 涨幅为正且低于3个点，pe在0-30之间，pb<1
 
 entry_rule_dict = {'volume_mean_window_len':15, 'multiple':1.5, 'amount_min':3000000, 
                    'pctChg_min':0,'pctChg_max':3,'pe_max':30, 'pe_min':0, 'pb_max':1}
 #持仓60日后卖出
 exit_rule_dict = {'exit_window_len':-60}
+```
 
 然后有两种验证方式
 
