@@ -1,7 +1,8 @@
 # Sphinx
 A Data Driven Trading Strategy application
 
-sphinx.config - DB configuration \n
+sphinx.config - DB configuration 
+
 rule_model.py - entry and exit rule validation for the strategy
 
 
