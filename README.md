@@ -5,6 +5,10 @@ sphinx.config - DB configuration
 
 rule_model.py - entry and exit rule validation for the strategy
 
+mydb.py - database query function on single stock and industry
+
+
+
 
 
 ## Tables
