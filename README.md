@@ -1,13 +1,19 @@
 # Sphinx
 A Data Driven Trading Strategy application
 
+## File description
+
 sphinx.config - DB configuration 
 
 rule_model.py - entry and exit rule validation for the strategy
 
 mydb.py - database query function on single stock and industry
 
+strategy_evaluation.py - replay evaluation functions
 
+-------------------------------------------------------
+
+strategy_replay.py - this is your only concern, make finetune here to find the best parameters combination
 
 
 
