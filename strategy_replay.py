@@ -14,7 +14,9 @@ exit_rule_dict = {'exit_window_len':-60}
 
 # 兴业银行
 code = 'sh.601166'
-stock_df = mydb.query_stock_kline_by_code(code)
+
+# 查询时间范围中开始时间默认为2000-01-01, 可以加入参数重写: start_date='yyyy-mm-dd'
+stock_df = mydb.query_stock_kline_by_code(code, end_date='2023-01-20')
 
 # 返回策略模型匹配到的所有数据
 row_list = se.get_capture_record(stock_df, entry_rule_dict, exit_rule_dict)
@@ -28,8 +30,11 @@ print('所有匹配日期: ', se.get_capture_record_date(row_list))
 ###################################################
 
 # Usage 2: 行业分析
+
 industry = '银行'
-stock_list_df = mydb.query_stock_kline_by_industry(industry)
+
+# 查询时间范围中开始时间默认为2000-01-01, 可以加入参数重写: start_date='yyyy-mm-dd'
+stock_list_df = mydb.query_stock_kline_by_industry(industry, end_date='2023-01-20')
 
 total_profit_ratio, total_size = se.evaluate_industry_profit(stock_list_df, entry_rule_dict, exit_rule_dict)
 print('profit ratio mean', float(total_profit_ratio/total_size))
