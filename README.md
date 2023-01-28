@@ -14,6 +14,7 @@ strategy_evaluation.py - replay evaluation functions
 -------------------------------------------------------
 
 strategy_replay.py - this is your only concern, make finetune here to find the best parameters combination
+
 daily_scanner.py - 每日扫描全场股票, 还需要判断交易日，给不同行业设置不同的策略
 
 ## Strategy Validation
