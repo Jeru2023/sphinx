@@ -39,13 +39,28 @@ def query_stock_list_by_industry(industry):
 # query stock daily K line data by code
 def query_stock_kline_by_code(code, end_date, start_date='2000-01-01'):
     engine = get_connection()
-    sql = "select * from stock_kline_daily where code='{}' and date>='{}' and date<='{}';".format(code, start_date, end_date)
+    sql = "select * from stock_kline_daily where code='{}' and date>'{}' and date<='{}';".format(code, start_date, end_date)
     df = pd.read_sql_query(sql, engine)
     return df
 
 # query stock daily K line data by industry
 def query_stock_kline_by_industry(industry, end_date, start_date='2000-01-01'):
     engine = get_connection()
-    sql = "select skd.date, skd.code, sc.code_name, skd.open, skd.close, skd.volume, skd.amount, skd.pctChg, skd.pbMRQ, skd.peTTM from stock_kline_daily skd, stock_code sc where skd.code=sc.code and sc.industry='{}' and date>='{}' and date<='{}';".format(industry, start_date, end_date)
+    sql = "select skd.date, skd.code, sc.code_name, skd.open, skd.close, skd.volume, skd.amount, skd.pctChg, skd.pbMRQ, skd.peTTM from stock_kline_daily skd, stock_code sc where skd.code=sc.code and sc.industry='{}' and date>'{}' and date<='{}';".format(industry, start_date, end_date)
     df = pd.read_sql_query(sql, engine)
     return df
+
+# return the latest record per code
+def query_kline_latest_line(code):
+    engine = get_connection()
+    sql = "select * from stock_kline_daily where code='{}' order by date desc limit 0,1;".format(code)
+    df = pd.read_sql_query(sql, engine)
+    return df
+
+# query latest volume_mean_window_len+1 records per code
+def query_kline_by_entry_window_len(code, volume_mean_window_len, end_date):
+    engine = get_connection()
+    sql = "select * from stock_kline_daily where code='{}' and date<='{}' order by date desc limit 0,{};".format(code, end_date, volume_mean_window_len+1)
+    df = pd.read_sql_query(sql, engine)
+    return df
+    

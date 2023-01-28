@@ -7,7 +7,7 @@ entry_rule_dict = {'volume_mean_window_len':15, 'multiple':1.5, 'amount_min':300
 
 exit_rule_dict = {'exit_window_len':-60}
 
-def evaluate_entry(row, entry_rule_dict=entry_rule_dict, exit_rule_dict=exit_rule_dict):
+def valid_entry(row, entry_rule_dict=entry_rule_dict):
     valid = row['volume']>(row['volume_rolling_mean'] * entry_rule_dict.get('multiple'))
     valid = valid and (row['pctChg'] > entry_rule_dict.get('pctChg_min')) and (row['pctChg'] < entry_rule_dict.get('pctChg_max'))
     valid = valid and (row['peTTM'] < entry_rule_dict.get('pe_max'))and (row['peTTM'] > entry_rule_dict.get('pe_min'))
