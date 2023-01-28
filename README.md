@@ -11,6 +11,8 @@ mydb.py - database query function on single stock and industry
 
 strategy_evaluation.py - replay evaluation functions
 
+stock_api - stock data query api
+
 -------------------------------------------------------
 
 strategy_replay.py - this is your only concern, make finetune here to find the best parameters combination
