@@ -14,7 +14,7 @@ def get_capture_record(stock_df, entry_rule_dict, exit_rule_dict):
         if (index < volume_mean_window_len):
             continue
 
-        if (rm.valid_entry(row, entry_rule_dict, exit_rule_dict)):
+        if (rm.valid_entry(row, entry_rule_dict)):
             row_list.append(row)
     return row_list
     
