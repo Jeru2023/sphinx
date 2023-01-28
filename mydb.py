@@ -19,22 +19,22 @@ def get_connection():
     host = config.get('DB', 'host')    
     port = config.get('DB', 'port')
     database = config.get('DB', 'database')
-    return create_engine('mysql+pymysql://{}:{}@{}:{}/{}'.format(user, password, host, port, database))
-	
+    return create_engine('mysql+pymysql://{}:{}@{}:{}/{}'.format(user, password, host, port, database), pool_size=20, max_overflow=50, pool_recycle=30)
+
+engine = get_connection()
+
 # query full stock list from DB
 def query_stock_list():
-    engine = get_connection()
     sql = "select * from stock_code;"
     df = pd.read_sql_query(sql, engine)
     return df
 
 # 获取需扫描的股票清单, 去除ST, 仅获取正常交易股票类型
-def query_selected_stock_list():
+def query_selected_stock_list(date):
     engine = get_connection()
-    sql = "select * from stock_code where isST=0 and type=1 and tradeStatus=1 and status=1"
+    sql = "select distinct sc.code from stock_code sc, stock_kline_daily skd where sc.isST=0 and sc.type=1 and sc.tradeStatus=1 and sc.status=1 and sc.code=skd.code and skd.pctChg>0 and skd.amount>1000000 and skd.peTTM>0 and skd.date='{}'".format(date)
     df = pd.read_sql_query(sql, engine)
     return df
-
 	
 # query stock list by industry
 # industry: 申万一级行业名称
@@ -67,7 +67,6 @@ def query_kline_latest_line(code):
 
 # query latest volume_mean_window_len+1 records per code
 def query_kline_by_entry_window_len(code, volume_mean_window_len, end_date):
-    engine = get_connection()
     sql = "select * from stock_kline_daily where code='{}' and date<='{}' order by date desc limit 0,{};".format(code, end_date, volume_mean_window_len+1)
     df = pd.read_sql_query(sql, engine)
     return df
