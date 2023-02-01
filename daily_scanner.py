@@ -22,7 +22,7 @@ def capture_industry(stock_list_df, industry, basic_entry_rule_dict, industry_en
     return capture_list
 
 def gen_content(industry, capture_list):
-    content = ['\n#{}, 当日捕获{}个标的。\n'.format(industry, len(capture_list))]
+    content = ['\n###{}, 当日捕获{}个标的。\n'.format(industry, len(capture_list))]
     
     if len(capture_list)==0:
         return ''
@@ -41,10 +41,7 @@ def gen_content(industry, capture_list):
     
     return '\n'.join(content)
         
-def scan_all(stock_list_df, industry_list_df, basic_entry_rule_dict):
-    
-    #{'pe_max':30, 'pe_min':0, 'pb_max':1}
-    
+def scan_all(stock_list_df, industry_list_df, basic_entry_rule_dict):  
     content = ''
     total_num = 0
     for index, row in industry_list_df.iterrows():
@@ -70,7 +67,7 @@ stock_list_df = mydb.query_selected_stock_list(date)
 print('len of stock list ', len(stock_list_df))
 industry_list_df = mydb.query_industry_list()
 
-content = '# 扫描日期: {}\n'.format(date)
+content = '# 扫描日期: {}\n\n'.format(date)
 content += scan_all(stock_list_df, industry_list_df, basic_entry_rule_dict)
 print(content)
 #robot.send_markdown(content)
