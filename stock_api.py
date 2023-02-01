@@ -18,8 +18,13 @@ def get_stock_industry(code):
     rs = bs.query_stock_industry(code)
     return merge_result(rs)
 	
-def get_stock_indicator(code, start_date, end_date):
+def query_stock_kline_daily(code, start_date, end_date):
     lg = bs.login()
-	query = "date,code,open,high,low,close,preclose,volume,amount,adjustflag,turn,pctChg,peTTM,pbMRQ,psTTM,pcfNcfTTM"
+    query = "date,code,open,high,low,close,preclose,volume,amount,adjustflag,turn,pctChg,peTTM,pbMRQ,psTTM,pcfNcfTTM"
     rs = bs.query_history_k_data_plus(code, query, start_date=start_date, end_date=end_date, frequency="d", adjustflag="3")
+    return merge_result(rs)
+    
+def query_trade_dates(start_date, end_date):
+    lg = bs.login()
+    rs = bs.query_trade_dates(start_date=start_date, end_date=end_date)
     return merge_result(rs)
