@@ -36,9 +36,10 @@ def query_industry_list():
     return df
 
 # 获取需扫描的股票清单, 去除ST, 仅获取正常交易股票类型
+# recent sc.tradeStatus=1 missing as a bug in daily updater
 def query_selected_stock_list(date):
     #engine = get_connection()
-    sql = "select distinct sc.code, sc.code_name, sc.industry from stock_code sc, stock_kline_daily skd where sc.isST=0 and sc.type=1 and sc.tradeStatus=1 and sc.status=1 and sc.code=skd.code and skd.pctChg>0 and skd.amount>1000000 and skd.peTTM>0 and skd.date='{}'".format(date)
+    sql = "select distinct sc.code, sc.code_name, sc.industry from stock_code sc, stock_kline_daily skd where sc.isST=0 and sc.type=1 and sc.status=1 and sc.code=skd.code and skd.pctChg>0 and skd.amount>1000000 and skd.peTTM>0 and skd.date='{}'".format(date)
     df = pd.read_sql_query(sql, engine)
     return df
 
