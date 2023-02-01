@@ -59,8 +59,8 @@ def scan_all(stock_list_df, industry_list_df, basic_entry_rule_dict):
     return content
 
 
+# TODO: date is hardcode for now
 date = '2023-01-31'
-# rule_model会使用20日均线，所以volume_mean_window_len最好大于20
 basic_entry_rule_dict = {'volume_mean_window_len':20, 'volume_multiple':1.8, 'close_multiple':1.2,  'amount_min':3000000, 'pctChg_min':0,'pctChg_max':3,'fetch_days':60}
 
 stock_list_df = mydb.query_selected_stock_list(date)
@@ -69,9 +69,10 @@ industry_list_df = mydb.query_industry_list()
 
 content = '# 扫描日期: {}\n\n'.format(date)
 content += scan_all(stock_list_df, industry_list_df, basic_entry_rule_dict)
-print(content)
-robot.send_markdown(content)
 
+print(content)
+# TODO: 解决内容超长问题，分段显示
+robot.send_markdown(content)
 
 
 # 需提升效率，分两步来判断，先判断当日数据，再结合历史数据
