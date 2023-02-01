@@ -70,7 +70,7 @@ industry_list_df = mydb.query_industry_list()
 content = '# 扫描日期: {}\n\n'.format(date)
 content += scan_all(stock_list_df, industry_list_df, basic_entry_rule_dict)
 print(content)
-#robot.send_markdown(content)
+robot.send_markdown(content)
 
 
 
