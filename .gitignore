@@ -1,2 +1,4 @@
 sphinx.config
-__pycache__/ 
+__pycache__
+.spyproject
+.gitignore
