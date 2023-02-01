@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import datetime
-import pandas as pd
 import time
 
 import stock_api as sa
 import mydb
 
+# 检查是否交易日
 def is_trading_day(date):
     start_date = date
     end_date = date
@@ -19,42 +19,33 @@ def is_trading_day(date):
     else: 
         return False
 
-def get_latest_stock(code, end_date):
-    latest_df = mydb.query_kline_latest_line(code)
-    
-    if len(latest_df['date'])==0:
-        return
 
-    #向后推移一天
-    start_date = (latest_df['date'].values[0]+datetime.timedelta(days=1)).strftime("%Y-%m-%d")
-    stock_df = sa.query_stock_kline_daily(code, start_date, str(end_date))
-    return stock_df
-    
-    #mydb.write_df_to_table(stock_df, 'stock_kline_daily')
-    
+# 增量更新单只股票记录至end_date    
 def update_stock(code, end_date):
-    latest_df = mydb.query_kline_latest_line(code)
     
-    #print('latest date:{},end_date:{}'.format())
+    # 按日期降序后获取最新一条记录
+    latest_df = mydb.query_kline_latest_line(code)  
     
+    # 如果股票记录为空，跳过
     if len(latest_df['date'])==0:
         return
     
     latest_date = str(latest_df['date'].values[0])
 
+    # 如果数据库最新日期等于传入日期，跳过
     if latest_date==str(end_date):
-        print('same')
         return
     
-    
-    #向后推移一天
+    # 向后推移一天
     start_date = (latest_df['date'].values[0]+datetime.timedelta(days=1)).strftime("%Y-%m-%d")
-    
     
 
     stock_df = sa.query_stock_kline_daily(code, start_date, str(end_date))
     mydb.write_df_to_table(stock_df, 'stock_kline_daily')
-    
+
+
+# TODO: 偶尔会中断，需要人工resume
+# 更新全部股票数据
 def update_all(date):
     code_list_df = mydb.query_stock_list()
     print("len ", len(code_list_df))
@@ -62,23 +53,18 @@ def update_all(date):
     i = 0
     for index, row in code_list_df.iterrows():
         i += 1
-        if (i<5395):
-            continue
+        #if (i<5395):
+        #    continue
         code = row['code']
         print('{} updating code: {}'.format(i, code))
         update_stock(code, today)
         
-def update_all_backup(stock_list_df):
-    df_all = pd.concat(stock_list_df)
-    mydb.write_df_to_table(df_all, 'stock_kline_daily')
-
-    
+  
 start_time = time.time()
 
+# TODO: 如果不是当天运行，而是非交易日补之前的记录，这里逻辑需更新
 today = datetime.date.today()
 if is_trading_day(today):
-    #stock_list_df = get_latest_stock_list(today)
-    #update_all(stock_list_df)
     update_all(today)
     
 end_time = time.time()
