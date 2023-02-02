@@ -5,7 +5,7 @@ import configparser as cp
 # exit_window_len 为卖出的时间窗口长度，如-15则在15日后卖出
 
 # generic entry rule
-basic_entry_rule_dict = {'volume_mean_window_len':15, 'volume_multiple':1.5, 'close_multiple':1.2, 'amount_min':3000000, 
+basic_entry_rule_dict = {'volume_mean_window_len':15, 'volume_multiple':2, 'close_multiple':1.2, 'amount_min':3000000, 
                    'pctChg_min':0, 'pctChg_max':3, 'fetch_days':60}
 
 # industry specified entry rule
@@ -18,12 +18,15 @@ def valid_entry(row, basic_entry_rule_dict=basic_entry_rule_dict, industry_entry
     valid = valid and (row['pctChg'] > basic_entry_rule_dict.get('pctChg_min')) and (row['pctChg'] < basic_entry_rule_dict.get('pctChg_max'))
     valid = valid and (row['close'] > row['open'])
     valid = valid and (row['amount'] > basic_entry_rule_dict.get('amount_min'))
-    valid = valid and (row['peTTM'] < float(industry_entry_rule_dict.get('pe_max'))) and (row['peTTM'] > float(industry_entry_rule_dict.get('pe_min')))
+    valid = valid and (row['peTTM'] < (float(industry_entry_rule_dict.get('pe_max'))*0.8)) and (row['peTTM'] > float(industry_entry_rule_dict.get('pe_min')))
     valid = valid and (row['pbMRQ'] < float(industry_entry_rule_dict.get('pb_max')))
     valid = valid and (row['close_ma_5'] > row['close_ma_10'])
     valid = valid and (row['volume_ma_3'] > row['volume_ma_5'])
     #print(row['close'],row['close_ma_60'])
     valid = valid and (row['close'] < row['close_ma_60'] * basic_entry_rule_dict.get('close_multiple'))
+    valid = valid and (row['close'] < row['close_ma_10'] * basic_entry_rule_dict.get('close_multiple'))
+    # 换手率超过2%
+    valid = valid and (row['turn']>2)
     return valid
 
 # 获取每个行业的PE/PB基准

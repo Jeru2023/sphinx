@@ -6,6 +6,10 @@ import time
 import stock_api as sa
 import mydb
 
+# TODO: 执行时间太久，估计两三个小时才跑完，如何优化? 5000多次请求，一次一秒, 完整执行时间统计为6623秒
+# 思路1: 先把所有记录添加到dataframe, 一次性写入，但好像提高并不多，主要瓶颈是baostock接口仅支持单个股票数据查询
+# 思路2: 多进程?
+
 # 检查是否交易日
 def is_trading_day(date):
     start_date = date

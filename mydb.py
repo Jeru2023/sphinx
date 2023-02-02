@@ -39,7 +39,7 @@ def query_industry_list():
 # recent sc.tradeStatus=1 missing as a bug in daily updater
 def query_selected_stock_list(date):
     #engine = get_connection()
-    sql = "select distinct sc.code, sc.code_name, sc.industry from stock_code sc, stock_kline_daily skd where sc.isST=0 and sc.type=1 and sc.status=1 and sc.code=skd.code and skd.pctChg>0 and skd.amount>1000000 and skd.peTTM>0 and skd.date='{}'".format(date)
+    sql = "select distinct sc.code, sc.code_name, sc.industry from stock_code sc, stock_kline_daily skd where sc.isST=0 and sc.type=1 and sc.status=1 and sc.code=skd.code and skd.pctChg>0 and skd.amount>80000000 and skd.peTTM>0 and skd.date='{}'".format(date)
     df = pd.read_sql_query(sql, engine)
     return df
 
@@ -51,20 +51,16 @@ def query_stock_list_by_industry(industry):
     df = pd.read_sql_query(sql, engine)
     return df
 
-def query_test(code):
-    sql = "select skd.date, skd.code, sc.code_name, sc.industry from stock_kline_daily skd, stock_code sc where skd.code='{}';".format(code)
-    df = pd.read_sql_query(sql, engine)
-    return df
-    
+   
 # query stock daily K line data by code
 def query_stock_kline_by_code(code, end_date, start_date='2000-01-01'):
-    sql = "select skd.date, skd.code, sc.code_name, sc.industry, skd.open, skd.close, skd.volume, skd.amount, skd.pctChg, skd.pbMRQ, skd.peTTM from stock_kline_daily skd, stock_code sc where sc.code=skd.code and skd.code='{}' and skd.date>'{}' and skd.date<='{}';".format(code, start_date, end_date)
+    sql = "select skd.date, skd.code, sc.code_name, sc.industry, skd.open, skd.close, skd.volume, skd.amount, skd.pctChg, skd.turn, skd.pbMRQ, skd.peTTM from stock_kline_daily skd, stock_code sc where sc.code=skd.code and skd.code='{}' and skd.date>'{}' and skd.date<='{}';".format(code, start_date, end_date)
     df = pd.read_sql_query(sql, engine)
     return df
 
 # query stock daily K line data by industry
 def query_stock_kline_by_industry(industry, end_date, start_date='2000-01-01'):
-    sql = "select skd.date, skd.code, sc.code_name, skd.open, skd.close, skd.volume, skd.amount, skd.pctChg, skd.pbMRQ, skd.peTTM from stock_kline_daily skd, stock_code sc where skd.code=sc.code and sc.industry='{}' and skd.date>'{}' and skd.date<='{}';".format(industry, start_date, end_date)
+    sql = "select skd.date, skd.code, sc.code_name, skd.open, skd.close, skd.volume, skd.amount, skd.pctChg, skd.turn, skd.pbMRQ, skd.peTTM from stock_kline_daily skd, stock_code sc where skd.code=sc.code and sc.industry='{}' and skd.date>'{}' and skd.date<='{}';".format(industry, start_date, end_date)
     print(sql)
     df = pd.read_sql_query(sql, engine)
     return df
@@ -77,7 +73,7 @@ def query_kline_latest_line(code):
 
 # query latest fetch_days+1 records per code
 def query_kline_by_entry_window_len(code, fetch_days, end_date):
-    sql = "select skd.date, sc.code, sc.industry, sc.code_name, skd.open, skd.close, skd.volume, skd.amount, skd.pctChg, skd.pbMRQ, skd.peTTM from stock_kline_daily skd, stock_code sc where sc.code=skd.code and sc.code='{}' and skd.date<='{}' order by skd.date desc limit 0,{};".format(code, end_date, fetch_days+1)
+    sql = "select skd.date, sc.code, sc.industry, sc.code_name, skd.open, skd.close, skd.volume, skd.amount, skd.pctChg, skd.turn, skd.pbMRQ, skd.peTTM from stock_kline_daily skd, stock_code sc where sc.code=skd.code and sc.code='{}' and skd.date<='{}' order by skd.date desc limit 0,{};".format(code, end_date, fetch_days+1)
     df = pd.read_sql_query(sql, engine)
     return df
 

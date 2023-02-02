@@ -22,7 +22,7 @@ def capture_industry(stock_list_df, industry, basic_entry_rule_dict, industry_en
     return capture_list
 
 def gen_content(industry, capture_list):
-    content = ['\n###{}, 当日捕获{}个标的。\n'.format(industry, len(capture_list))]
+    content = ['\n\n###{}, 当日捕获{}个标的。'.format(industry, len(capture_list))]
     
     if len(capture_list)==0:
         return ''
@@ -60,19 +60,19 @@ def scan_all(stock_list_df, industry_list_df, basic_entry_rule_dict):
 
 
 # TODO: date is hardcode for now
-date = '2023-01-31'
-basic_entry_rule_dict = {'volume_mean_window_len':20, 'volume_multiple':1.8, 'close_multiple':1.2,  'amount_min':3000000, 'pctChg_min':0,'pctChg_max':3,'fetch_days':60}
+date = '2023-02-02'
+basic_entry_rule_dict = {'volume_mean_window_len':20, 'volume_multiple':1.8, 'close_multiple':1.1,  'amount_min':80000000, 'pctChg_min':0,'pctChg_max':3,'fetch_days':60}
 
 stock_list_df = mydb.query_selected_stock_list(date)
 print('len of stock list ', len(stock_list_df))
 industry_list_df = mydb.query_industry_list()
 
-content = '# 扫描日期: {}\n\n'.format(date)
+content = '# 扫描日期: {}'.format(date)
 content += scan_all(stock_list_df, industry_list_df, basic_entry_rule_dict)
 
 print(content)
 # TODO: 解决内容超长问题，分段显示
-robot.send_markdown(content)
+robot.send_text(content)
 
 
 # 需提升效率，分两步来判断，先判断当日数据，再结合历史数据
