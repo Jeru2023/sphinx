@@ -1,12 +1,7 @@
 import rule_model as rm
 import math
 
-# 捕获单只股票满足策略模型的记录
-def get_capture_record(stock_df, basic_entry_rule_dict, industry_entry_rule_dict, exit_rule_dict):
-    volume_mean_window_len = basic_entry_rule_dict.get('volume_mean_window_len')
-    exit_window_len = exit_rule_dict.get('exit_window_len')
-    
-    stock_df['volume_rolling_mean'] = stock_df['volume'].rolling(volume_mean_window_len).mean()
+def append_columns(stock_df):
     stock_df['close_ma_5'] = stock_df['close'].rolling(5).mean()
     stock_df['close_ma_10'] = stock_df['close'].rolling(10).mean()
     stock_df['close_ma_20'] = stock_df['close'].rolling(20).mean()
@@ -16,12 +11,20 @@ def get_capture_record(stock_df, basic_entry_rule_dict, industry_entry_rule_dict
     stock_df['volume_ma_5'] = stock_df['volume'].rolling(5).mean()
     stock_df['volume_ma_10'] = stock_df['volume'].rolling(10).mean()
     stock_df['volume_ma_20'] = stock_df['volume'].rolling(20).mean()
+    return stock_df
+
+# 捕获单只股票满足策略模型的记录
+def get_capture_record(stock_df, basic_entry_rule_dict, industry_entry_rule_dict, exit_rule_dict):
+    fetch_days = basic_entry_rule_dict.get('fetch_days')
+    exit_window_len = exit_rule_dict.get('exit_window_len')
+    
+    stock_df = append_columns(stock_df)
     
     stock_df['profit'] = stock_df['close'].shift(exit_window_len)-stock_df['close']
     
     row_list = []
     for index, row in stock_df.iterrows():
-        if (index < 60): #volume_mean_window_len
+        if (index < fetch_days): 
             continue
 
         if (rm.valid_entry(row, basic_entry_rule_dict, industry_entry_rule_dict)):
@@ -30,18 +33,7 @@ def get_capture_record(stock_df, basic_entry_rule_dict, industry_entry_rule_dict
     
 # 检测当前日期记录是否满足入场条件
 def validate_current_record(stock_df, basic_entry_rule_dict, industry_entry_rule_dict, date):
-    volume_mean_window_len = basic_entry_rule_dict.get('volume_mean_window_len')
-    
-    stock_df['volume_rolling_mean'] = stock_df['volume'].rolling(volume_mean_window_len).mean()
-    stock_df['close_ma_5'] = stock_df['close'].rolling(5).mean()
-    stock_df['close_ma_10'] = stock_df['close'].rolling(10).mean()
-    stock_df['close_ma_20'] = stock_df['close'].rolling(20).mean()
-    stock_df['close_ma_60'] = stock_df['close'].rolling(60).mean()
-    
-    stock_df['volume_ma_3'] = stock_df['volume'].rolling(3).mean()
-    stock_df['volume_ma_5'] = stock_df['volume'].rolling(5).mean()
-    stock_df['volume_ma_10'] = stock_df['volume'].rolling(10).mean()
-    stock_df['volume_ma_20'] = stock_df['volume'].rolling(20).mean()
+    stock_df = append_columns(stock_df)
     
     format_code = '%Y-%m-%d'
     

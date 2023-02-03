@@ -61,7 +61,6 @@ def query_stock_kline_by_code(code, end_date, start_date='2000-01-01'):
 # query stock daily K line data by industry
 def query_stock_kline_by_industry(industry, end_date, start_date='2000-01-01'):
     sql = "select skd.date, skd.code, sc.code_name, skd.open, skd.close, skd.volume, skd.amount, skd.pctChg, skd.turn, skd.pbMRQ, skd.peTTM from stock_kline_daily skd, stock_code sc where skd.code=sc.code and sc.industry='{}' and skd.date>'{}' and skd.date<='{}';".format(industry, start_date, end_date)
-    print(sql)
     df = pd.read_sql_query(sql, engine)
     return df
 

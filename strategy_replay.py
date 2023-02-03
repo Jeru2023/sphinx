@@ -1,12 +1,10 @@
-import baostock as bs
-import pandas as pd
 import mydb
 import rule_model as rm
 import strategy_evaluation as se
 
-# rule_model会使用20日均线，所以volume_mean_window_len最好大于20
-basic_entry_rule_dict = {'volume_mean_window_len':20, 'volume_multiple':3, 'close_multiple':1.2, 'amount_min':3000000, 'pctChg_min':0, 'pctChg_max':3, 'fetch_days':60}
-exit_rule_dict = {'one_day_loss':2.5, 'exit_window_len':-60}
+# rule_model会使用20日均线作为基准
+basic_entry_rule_dict = {'volume_multiple':2, 'close_multiple':1.2, 'amount_min':80000000, 'pctChg_min':0, 'pctChg_max':3, 'fetch_days':60}
+exit_rule_dict = {'one_day_loss':2.5, 'exit_window_len':-240}
 
 ###################################################
 
@@ -32,7 +30,7 @@ def evaluate_stock(code, industry):
 def evaluate_industry(industry):
     print('start...')
     # 查询时间范围中开始时间默认为2000-01-01, 可以加入参数重写: start_date='yyyy-mm-dd'
-    stock_list_df = mydb.query_stock_kline_by_industry(industry, end_date='2023-01-20')
+    stock_list_df = mydb.query_stock_kline_by_industry(industry, end_date='2023-02-03')
     industry_entry_rule_dict = rm.get_industry_entry_rule_dict(industry)
     total_profit_ratio, total_size = se.evaluate_industry_profit(stock_list_df, basic_entry_rule_dict, industry_entry_rule_dict, exit_rule_dict)
     print('profit ratio mean', float(total_profit_ratio/total_size))

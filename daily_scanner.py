@@ -72,7 +72,7 @@ content += scan_all(stock_list_df, industry_list_df, basic_entry_rule_dict)
 
 print(content)
 # TODO: 解决内容超长问题，分段显示
-robot.send_text(content)
+#robot.send_text(content)
 
 
 # 需提升效率，分两步来判断，先判断当日数据，再结合历史数据
