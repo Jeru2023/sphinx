@@ -61,7 +61,7 @@ def scan_all(stock_list_df, industry_list_df, basic_entry_rule_dict):
 
 # TODO: date is hardcode for now
 date = '2023-02-03'
-basic_entry_rule_dict = {'volume_mean_window_len':20, 'volume_multiple':1.8, 'close_multiple':1.1, 'turn':1, 'market_cap_min':5000000000, 'pctChg_min':0,'pctChg_max':3,'fetch_days':60}
+basic_entry_rule_dict = {'volume_multiple':1.8, 'close_multiple':1.1, 'turn_min':1, 'market_cap_min':5000000000, 'pctChg_min':0,'pctChg_max':3,'fetch_days':60}
 
 stock_list_df = mydb.query_selected_stock_list(date)
 print('len of stock list ', len(stock_list_df))

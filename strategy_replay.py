@@ -3,7 +3,7 @@ import rule_model as rm
 import strategy_evaluation as se
 
 # rule_model会使用20日均线作为基准
-basic_entry_rule_dict = {'volume_multiple':2, 'close_multiple':1.2, 'market_cap_min':5000000000, 'turn':1, 'pctChg_min':0, 'pctChg_max':3, 'fetch_days':60}
+basic_entry_rule_dict = {'volume_multiple':1.8, 'close_multiple':1.1, 'market_cap_min':5000000000, 'turn_min':1, 'pctChg_min':0, 'pctChg_max':3, 'fetch_days':60}
 exit_rule_dict = {'one_day_loss':2.5, 'exit_window_len':-240}
 
 ###################################################
@@ -43,5 +43,5 @@ industry = '医药生物'
 #evaluate_stock(code, industry)
 
 # Usage 2: 行业分析
-industry = '食品饮料'
+industry = '医药生物'
 evaluate_industry(industry)
