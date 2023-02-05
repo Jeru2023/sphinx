@@ -67,7 +67,8 @@ def update_all(date):
 start_time = time.time()
 
 # TODO: 如果不是当天运行，而是非交易日补之前的记录，这里逻辑需更新
-today = datetime.date.today()
+#today = datetime.date.today()
+today = datetime.date(2023, 2, 3)
 if is_trading_day(today):
     update_all(today)
     
